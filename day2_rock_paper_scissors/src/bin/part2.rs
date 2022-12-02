@@ -22,27 +22,28 @@ fn main() {
     let mut total_score = 0;
 
     for game in input {
-        total_score += calc_score(game)
+        let (elf_hand, my_hand) = game;
+        total_score += calc_score(elf_hand, my_hand);
     }
 
     println!("total score: {}", total_score)
 }
 
-fn calc_score(game: (String, String)) -> u32 {
-    match game.0.as_str() {
-        "A" => match game.1.as_str() {
+fn calc_score(elf_hand: String, my_hand: String) -> u32 {
+    match elf_hand.as_str() {
+        "A" => match my_hand.as_str() {
             "X" => LOSE + SCISSORS,
             "Y" => DRAW + ROCK,
             "Z" => WIN + PAPER,
             _ => 0,
         },
-        "B" => match game.1.as_str() {
+        "B" => match my_hand.as_str() {
             "X" => LOSE + ROCK,
             "Y" => DRAW + PAPER,
             "Z" => WIN + SCISSORS,
             _ => 0,
         },
-        "C" => match game.1.as_str() {
+        "C" => match my_hand.as_str() {
             "X" => LOSE + PAPER,
             "Y" => DRAW + SCISSORS,
             "Z" => WIN + ROCK,
