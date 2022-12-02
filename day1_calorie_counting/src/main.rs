@@ -21,12 +21,13 @@ fn main() {
 
             cal_sum_per_elf.sort();
 
-            println!("most cal: {}", cal_sum_per_elf[cal_sum_per_elf.len() - 1]);
+            if let Some(last) = cal_sum_per_elf.last() {
+                println!("most cal: {}", last);
+            }
+
             println!(
                 "sum of top three: {}",
-                cal_sum_per_elf[cal_sum_per_elf.len() - 1]
-                    + cal_sum_per_elf[cal_sum_per_elf.len() - 2]
-                    + cal_sum_per_elf[cal_sum_per_elf.len() - 3]
+                cal_sum_per_elf.iter().rev().take(3).sum::<u32>()
             );
         }
         Err(err) => {
