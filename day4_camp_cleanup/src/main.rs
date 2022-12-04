@@ -1,5 +1,10 @@
 use std::fs;
 
+struct Section {
+    start: i32,
+    end: i32,
+}
+
 fn main() {
     let input = get_input();
 
@@ -8,18 +13,25 @@ fn main() {
     let total_count = input.len();
 
     for pair in input {
-        let elf1 = pair.first().expect("invalid input data");
-        let elf2 = pair.get(1).expect("invalid input data");
+        let elf_1_section = pair.first().expect("invalid input data");
+        let elf_2_section = pair.get(1).expect("invalid input data");
 
-        if elf1.0 - elf2.0 >= 0 && elf1.1 - elf2.1 <= 0 {
+        if elf_1_section.start - elf_2_section.start >= 0
+            && elf_1_section.end - elf_2_section.end <= 0
+        {
             full_overlap_count += 1;
-        } else if elf1.0 - elf2.0 <= 0 && elf1.1 - elf2.1 >= 0 {
+        } else if elf_1_section.start - elf_2_section.start <= 0
+            && elf_1_section.end - elf_2_section.end >= 0
+        {
             full_overlap_count += 1
         }
 
-        if elf1.1 - elf2.0 < 0 && elf1.1 - elf2.1 < 0 {
+        if elf_1_section.end - elf_2_section.start < 0 && elf_1_section.end - elf_2_section.end < 0
+        {
             no_overlap_count += 1;
-        } else if elf1.0 - elf2.1 > 0 && elf1.1 - elf2.1 > 0 {
+        } else if elf_1_section.start - elf_2_section.end > 0
+            && elf_1_section.end - elf_2_section.end > 0
+        {
             no_overlap_count += 1
         }
     }
@@ -31,8 +43,8 @@ fn main() {
     );
 }
 
-fn get_input() -> Vec<Vec<(i32, i32)>> {
-    let input = fs::read_to_string("./src/inp.txt");
+fn get_input() -> Vec<Vec<Section>> {
+    let input = fs::read_to_string("./src/input.txt");
 
     match input {
         Ok(input) => input
@@ -52,11 +64,12 @@ fn get_input() -> Vec<Vec<(i32, i32)>> {
                             .expect("invalid input file")
                             .parse::<i32>()
                             .expect("invalid input file");
-                        (start, end)
+
+                        Section { start, end }
                     })
-                    .collect::<Vec<(i32, i32)>>()
+                    .collect::<Vec<Section>>()
             })
-            .collect::<Vec<Vec<(i32, i32)>>>(),
+            .collect::<Vec<Vec<Section>>>(),
         Err(err) => {
             panic!("err reading input: {}", err);
         }
