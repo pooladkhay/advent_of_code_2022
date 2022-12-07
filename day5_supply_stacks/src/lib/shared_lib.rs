@@ -49,6 +49,7 @@ pub fn get_moves(path: &str) -> Vec<Move> {
         .lines()
         .map(|m| m.trim().split_ascii_whitespace().collect::<Vec<&str>>())
         .map(|m| Move {
+            // m -> ["move", "A_NUMBER", "from", "A_NUMBER", "to", "A_NUMBER"]
             amount: m.get(1).unwrap().parse::<usize>().unwrap(),
             from: m.get(3).unwrap().parse::<usize>().unwrap(),
             to: m.get(5).unwrap().parse::<usize>().unwrap(),
