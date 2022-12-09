@@ -20,6 +20,12 @@ impl Grid {
         }
     }
 
+    fn egdes_count(&self) -> usize {
+        self.inner.first().unwrap().len()
+            + self.inner.last().unwrap().len()
+            + ((self.inner.len() - 2) * 2)
+    }
+
     fn is_visible(&self, row_index: usize, col_index: usize, height: &usize) -> bool {
         let mut sight: HashMap<&str, Vec<usize>> = HashMap::new();
 
@@ -138,9 +144,7 @@ fn main() {
     let input = get_input("src/input.txt");
     let grid = Grid::new(input);
 
-    let mut visible_egde = grid.inner.first().unwrap().len()
-        + grid.inner.last().unwrap().len()
-        + ((grid.inner.len() - 2) * 2);
+    let mut visible_trees = grid.egdes_count();
 
     let mut scores: Vec<usize> = vec![];
 
@@ -149,7 +153,7 @@ fn main() {
             for (col_num, col) in row.iter().enumerate() {
                 if col_num != 0 && col_num != row.len() - 1 {
                     if grid.is_visible(row_num, col_num, col) {
-                        visible_egde += 1
+                        visible_trees += 1
                     }
                     let score = grid.get_scenic_score(row_num, col_num, col);
                     scores.push(score);
@@ -158,7 +162,7 @@ fn main() {
         }
     }
 
-    println!("visible edges: {}", visible_egde);
+    println!("visible trees: {}", visible_trees);
 
     scores.sort();
     println!("max score: {}", scores.last().unwrap())
